@@ -10,6 +10,8 @@ from demo_predict import (
     predict_sample
 )
 
+from file_predict import predict_file
+
 app = Flask(__name__)
 
 CORS(app)
@@ -35,24 +37,35 @@ def predict():
 
     return jsonify(result)    
 
-# @app.route("/predict", methods=["POST"])
+@app.route(
+    "/predict-file",
+    methods=["POST"]
+)
+def predict_uploaded_file():
 
-# def predict():
+    try:
 
-#     data = request.json
+        file = request.files["file"]
 
-#     features = data["features"]
+        result = predict_file(file)
 
-#     result = predict_cancer(
-#         features
-#     )
+        return jsonify(result)
 
-#     return jsonify(result)
+    except Exception as e:
+
+        print(e)
+
+        return jsonify({
+            "error": str(e)
+        }), 500
+
 
 
 
 if __name__ == "__main__":
 
     app.run(
+        host="0.0.0.0",
+        port=5000,
         debug=True
     )

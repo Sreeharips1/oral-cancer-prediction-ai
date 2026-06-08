@@ -1,0 +1,20 @@
+services:
+  backend:
+    build: ./backend
+    container_name: oral-cancer-backend
+
+    ports:
+      - "5000:5000"
+
+    volumes:
+      - ./dataset:/dataset
+
+  frontend:
+    build: ./frontend
+    container_name: oral-cancer-frontend
+
+    ports:
+      - "5173:5173"
+
+    depends_on:
+      - backend
